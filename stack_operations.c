@@ -6,7 +6,7 @@
 /*   By: kato <kato@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 16:25:49 by kato              #+#    #+#             */
-/*   Updated: 2025/07/01 16:25:50 by kato             ###   ########.fr       */
+/*   Updated: 2025/07/04 16:33:40 by kato             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ t_stack	*create_stack(void)
 {
 	t_stack	*stack;
 
-	stack = malloc(sizeof(t_stack));
+	stack = (t_stack *)malloc(sizeof(t_stack));
 	if (!stack)
-		return (NULL);
+		error_exit(NULL, NULL);
 	stack->top = NULL;
 	stack->size = 0;
 	return (stack);
@@ -28,9 +28,11 @@ void	push(t_stack *stack, int value)
 {
 	t_node	*new_node;
 
-	new_node = malloc(sizeof(t_node));
+	if (!stack)
+		error_exit(NULL, NULL);
+	new_node = (t_node *)malloc(sizeof(t_node));
 	if (!new_node)
-		return ;
+		error_exit(stack, NULL);
 	new_node->value = value;
 	new_node->next = stack->top;
 	stack->top = new_node;
@@ -42,8 +44,8 @@ int	pop(t_stack *stack)
 	t_node	*temp;
 	int		value;
 
-	if (is_empty(stack))
-		return (0);
+	if (!stack || !stack->top)
+		error_exit(stack, NULL);
 	temp = stack->top;
 	value = temp->value;
 	stack->top = stack->top->next;
@@ -72,5 +74,7 @@ void	clear_stack(t_stack *stack)
 
 int	is_empty(t_stack *stack)
 {
+	if (!stack)
+		return (1);
 	return (stack->top == NULL);
 }

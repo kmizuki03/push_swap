@@ -6,7 +6,7 @@
 /*   By: kato <kato@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 16:25:12 by kato              #+#    #+#             */
-/*   Updated: 2025/07/01 16:25:13 by kato             ###   ########.fr       */
+/*   Updated: 2025/07/04 16:33:39 by kato             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ static void	init_stack(t_stack *stack_a, int argc, char **argv)
 	int	i;
 	int	num;
 
+	if (!stack_a || !argv)
+		error_exit(stack_a, NULL);
 	i = argc - 1;
 	while (i > 0)
 	{
@@ -32,6 +34,8 @@ static void	init_stack(t_stack *stack_a, int argc, char **argv)
 
 static void	check_duplicates(t_stack *stack_a, t_stack *stack_b)
 {
+	if (!stack_a)
+		error_exit(stack_a, stack_b);
 	if (has_duplicates(stack_a))
 		error_exit(stack_a, stack_b);
 }
@@ -41,7 +45,7 @@ int	main(int argc, char **argv)
 	t_stack	*stack_a;
 	t_stack	*stack_b;
 
-	if (argc < 2)
+	if (argc < 2 || !argv)
 		return (0);
 	stack_a = create_stack();
 	stack_b = create_stack();

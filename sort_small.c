@@ -6,7 +6,7 @@
 /*   By: kato <kato@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 17:01:00 by kato              #+#    #+#             */
-/*   Updated: 2025/07/01 16:35:39 by kato             ###   ########.fr       */
+/*   Updated: 2025/07/04 16:33:40 by kato             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,16 @@
 
 void	sort_two(t_stack *stack_a)
 {
+	if (!stack_a || !stack_a->top || !stack_a->top->next)
+		return ;
 	if (stack_a->top->value > stack_a->top->next->value)
 		sa(stack_a);
 }
 
 static void	sort_three_case1(t_stack *stack_a, int first, int second, int third)
 {
+	if (!stack_a)
+		return ;
 	if (first > second && second < third && third > first)
 		sa(stack_a);
 	else if (first > second && second > third)
@@ -31,6 +35,8 @@ static void	sort_three_case1(t_stack *stack_a, int first, int second, int third)
 
 static void	sort_three_case2(t_stack *stack_a, int first, int second, int third)
 {
+	if (!stack_a)
+		return ;
 	if (first > second && second < third && third < first)
 		ra(stack_a);
 	else if (first < second && second > third && third > first)
@@ -45,6 +51,8 @@ static void	sort_three_case2(t_stack *stack_a, int first, int second, int third)
 static void	sort_three_dispatch(t_stack *stack_a, int first, int second,
 		int third)
 {
+	if (!stack_a)
+		return ;
 	sort_three_case1(stack_a, first, second, third);
 	sort_three_case2(stack_a, first, second, third);
 }
@@ -55,6 +63,9 @@ void	sort_three(t_stack *stack_a)
 	int	second;
 	int	third;
 
+	if (!stack_a || !stack_a->top || !stack_a->top->next
+		|| !stack_a->top->next->next)
+		return ;
 	if (stack_a->size == 2)
 	{
 		sort_two(stack_a);
