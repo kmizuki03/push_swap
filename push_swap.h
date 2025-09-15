@@ -6,7 +6,7 @@
 /*   By: kato <kato@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 16:25:17 by kato              #+#    #+#             */
-/*   Updated: 2025/07/04 17:00:55 by kato             ###   ########.fr       */
+/*   Updated: 2025/07/18 20:33:49 by kato             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 typedef struct s_node
 {
 	int				value;
+	int				index; // インデックス化用フィールド追加
 	struct s_node	*next;
 }	t_node;
 
@@ -30,7 +31,7 @@ typedef struct s_stack
 }	t_stack;
 
 t_stack	*create_stack(void);
-void	push(t_stack *stack, int value);
+void	push(t_stack *stack, int value, int index); // index対応push
 int		pop(t_stack *stack);
 void	clear_stack(t_stack *stack);
 int		is_empty(t_stack *stack);
@@ -70,5 +71,8 @@ void	sort_three(t_stack *stack_a);
 void	sort_five(t_stack *stack_a, t_stack *stack_b);
 
 void	sort_large_stack(t_stack *stack_a, t_stack *stack_b);
+
+void	assign_indexes(t_stack *stack); // インデックス割り当て用関数プロトタイプ追加
+int pop_with_index(t_stack *stack, int *index); // indexも返すpop
 
 #endif

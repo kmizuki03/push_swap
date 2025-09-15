@@ -6,7 +6,7 @@
 /*   By: kato <kato@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 16:25:49 by kato              #+#    #+#             */
-/*   Updated: 2025/07/04 16:33:40 by kato             ###   ########.fr       */
+/*   Updated: 2025/07/18 20:33:58 by kato             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_stack	*create_stack(void)
 	return (stack);
 }
 
-void	push(t_stack *stack, int value)
+void	push(t_stack *stack, int value, int index)
 {
 	t_node	*new_node;
 
@@ -34,6 +34,7 @@ void	push(t_stack *stack, int value)
 	if (!new_node)
 		error_exit(stack, NULL);
 	new_node->value = value;
+	new_node->index = index;
 	new_node->next = stack->top;
 	stack->top = new_node;
 	stack->size++;
@@ -48,6 +49,23 @@ int	pop(t_stack *stack)
 		error_exit(stack, NULL);
 	temp = stack->top;
 	value = temp->value;
+	stack->top = stack->top->next;
+	free(temp);
+	stack->size--;
+	return (value);
+}
+
+int	pop_with_index(t_stack *stack, int *index)
+{
+	t_node	*temp;
+	int		value;
+
+	if (!stack || !stack->top)
+		error_exit(stack, NULL);
+	temp = stack->top;
+	value = temp->value;
+	if (index)
+		*index = temp->index;
 	stack->top = stack->top->next;
 	free(temp);
 	stack->size--;

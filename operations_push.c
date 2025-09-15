@@ -6,7 +6,7 @@
 /*   By: kato <kato@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 17:11:00 by kato              #+#    #+#             */
-/*   Updated: 2025/07/01 16:29:49 by kato             ###   ########.fr       */
+/*   Updated: 2025/07/18 20:34:14 by kato             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,20 @@
 
 void	pa(t_stack *stack_a, t_stack *stack_b)
 {
-	int	value;
-
+	int value, index;
 	if (is_empty(stack_b))
 		return ;
-	value = pop(stack_b);
-	push(stack_a, value);
+	value = pop_with_index(stack_b, &index);
+	push(stack_a, value, index);
 	write(1, "pa\n", 3);
 }
 
 void	pb(t_stack *stack_a, t_stack *stack_b)
 {
-	int	value;
-
+	int value, index;
 	if (is_empty(stack_a))
 		return ;
-	value = pop(stack_a);
-	push(stack_b, value);
+	value = pop_with_index(stack_a, &index);
+	push(stack_b, value, index);
 	write(1, "pb\n", 3);
 }
