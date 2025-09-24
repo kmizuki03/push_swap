@@ -6,7 +6,7 @@
 /*   By: kato <kato@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 16:25:49 by kato              #+#    #+#             */
-/*   Updated: 2025/07/18 20:33:58 by kato             ###   ########.fr       */
+/*   Updated: 2025/09/24 16:06:28 by kato             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,22 +55,7 @@ int	pop(t_stack *stack)
 	return (value);
 }
 
-int	pop_with_index(t_stack *stack, int *index)
-{
-	t_node	*temp;
-	int		value;
-
-	if (!stack || !stack->top)
-		error_exit(stack, NULL);
-	temp = stack->top;
-	value = temp->value;
-	if (index)
-		*index = temp->index;
-	stack->top = stack->top->next;
-	free(temp);
-	stack->size--;
-	return (value);
-}
+int	pop_with_index(t_stack *stack, int *index);
 
 void	clear_stack(t_stack *stack)
 {

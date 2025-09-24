@@ -6,7 +6,7 @@
 /*   By: kato <kato@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 16:25:12 by kato              #+#    #+#             */
-/*   Updated: 2025/07/18 20:34:21 by kato             ###   ########.fr       */
+/*   Updated: 2025/09/24 15:59:32 by kato             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ static void	init_stack(t_stack *stack_a, int argc, char **argv)
 		num = ft_atoi(argv[i]);
 		if (num == 0 && argv[i][0] != '0')
 			error_exit(stack_a, NULL);
-		push(stack_a, num, 0); // indexは一旦0で初期化
+		push(stack_a, num, 0);
 		i--;
 	}
-	assign_indexes(stack_a); // ここでインデックス割り当て
+	assign_indexes(stack_a);
 }
 
 static void	check_duplicates(t_stack *stack_a, t_stack *stack_b)

@@ -1,37 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   operations_push.c                                  :+:      :+:    :+:   */
+/*   stack_ops_extra.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kato <kato@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/01 17:11:00 by kato              #+#    #+#             */
+/*   Created: 2025/09/24 16:05:00 by kato              #+#    #+#             */
 /*   Updated: 2025/09/24 16:06:28 by kato             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	pa(t_stack *stack_a, t_stack *stack_b)
+int	pop_with_index(t_stack *stack, int *index)
 {
-	int	value;
-	int	index;
+	t_node	*temp;
+	int		value;
 
-	if (is_empty(stack_b))
-		return ;
-	value = pop_with_index(stack_b, &index);
-	push(stack_a, value, index);
-	write(1, "pa\n", 3);
-}
-
-void	pb(t_stack *stack_a, t_stack *stack_b)
-{
-	int	value;
-	int	index;
-
-	if (is_empty(stack_a))
-		return ;
-	value = pop_with_index(stack_a, &index);
-	push(stack_b, value, index);
-	write(1, "pb\n", 3);
+	if (!stack || !stack->top)
+		error_exit(stack, NULL);
+	temp = stack->top;
+	value = temp->value;
+	if (index)
+		*index = temp->index;
+	stack->top = stack->top->next;
+	free(temp);
+	stack->size--;
+	return (value);
 }
