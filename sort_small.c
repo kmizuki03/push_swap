@@ -1,78 +1,90 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   sort_small.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: kato <kato@student.42.fr>                  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/01 17:01:00 by kato              #+#    #+#             */
-/*   Updated: 2025/07/04 16:33:40 by kato             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "push_swap.h"
 
-void	sort_two(t_stack *stack_a)
+static int	get_max_value_pos(t_stack *stack)
 {
-	if (!stack_a || !stack_a->top || !stack_a->top->next)
-		return ;
-	if (stack_a->top->value > stack_a->top->next->value)
-		sa(stack_a);
-}
+	int	max;
+	int	pos;
+	int	max_pos;
 
-static void	sort_three_case1(t_stack *stack_a, int first, int second, int third)
-{
-	if (!stack_a)
-		return ;
-	if (first > second && second < third && third > first)
-		sa(stack_a);
-	else if (first > second && second > third)
+	max = stack->value;
+	pos = 0;
+	max_pos = 0;
+	while (stack)
 	{
-		sa(stack_a);
-		rra(stack_a);
+		if (stack->value > max)
+		{
+			max = stack->value;
+			max_pos = pos;
+		}
+		pos++;
+		stack = stack->next;
 	}
+	return (max_pos);
 }
 
-static void	sort_three_case2(t_stack *stack_a, int first, int second, int third)
+void	sort_three(t_stack **stack_a)
 {
-	if (!stack_a)
+	int	max_pos;
+
+	if (is_sorted(*stack_a))
 		return ;
-	if (first > second && second < third && third < first)
-		ra(stack_a);
-	else if (first < second && second > third && third > first)
+	max_pos = get_max_value_pos(*stack_a);
+	if (max_pos == 0)
+		ra(stack_a, 1);
+	else if (max_pos == 1)
+		rra(stack_a, 1);
+	if ((*stack_a)->value > (*stack_a)->next->value)
+		sa(stack_a, 1);
+}
+
+static int	get_distance(t_stack *stack, int index)
+{
+	int	distance;
+
+	distance = 0;
+	while (stack)
 	{
-		sa(stack_a);
-		ra(stack_a);
+		if (stack->index == index)
+			break ;
+		distance++;
+		stack = stack->next;
 	}
-	else if (first < second && second > third && third < first)
-		rra(stack_a);
+	return (distance);
 }
 
-static void	sort_three_dispatch(t_stack *stack_a, int first, int second,
-		int third)
+static void	push_min_to_b(t_stack **stack_a, t_stack **stack_b)
 {
-	if (!stack_a)
-		return ;
-	sort_three_case1(stack_a, first, second, third);
-	sort_three_case2(stack_a, first, second, third);
-}
+	int	min_index;
+	int	distance;
+	int	size;
 
-void	sort_three(t_stack *stack_a)
-{
-	int	first;
-	int	second;
-	int	third;
-
-	if (!stack_a || !stack_a->top || !stack_a->top->next
-		|| !stack_a->top->next->next)
-		return ;
-	if (stack_a->size == 2)
+	min_index = get_min_index(*stack_a);
+	distance = get_distance(*stack_a, min_index);
+	size = stack_size(*stack_a);
+	if (distance <= size / 2)
 	{
-		sort_two(stack_a);
-		return ;
+		while ((*stack_a)->index != min_index)
+			ra(stack_a, 1);
 	}
-	first = stack_a->top->value;
-	second = stack_a->top->next->value;
-	third = stack_a->top->next->next->value;
-	sort_three_dispatch(stack_a, first, second, third);
+	else
+	{
+		while ((*stack_a)->index != min_index)
+			rra(stack_a, 1);
+	}
+	pb(stack_a, stack_b, 1);
+}
+
+void	sort_small(t_stack **stack_a, t_stack **stack_b)
+{
+	int	size;
+
+	size = stack_size(*stack_a);
+	while (size > 3)
+	{
+		push_min_to_b(stack_a, stack_b);
+		size--;
+	}
+	sort_three(stack_a);
+	while (*stack_b)
+		pa(stack_a, stack_b, 1);
 }
