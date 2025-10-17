@@ -24,6 +24,14 @@ typedef struct s_stack
 	struct s_stack	*next;
 }					t_stack;
 
+typedef struct s_rotate_params
+{
+	int	pos_a;
+	int	pos_b;
+	int	size_a;
+	int	size_b;
+}		t_rotate_params;
+
 /* Stack operations */
 t_stack				*stack_new(int value);
 void				stack_add_back(t_stack **stack, t_stack *new);

@@ -12,24 +12,24 @@
 
 #include "push_swap.h"
 
-void	exec_double_rotate(t_stack **a, t_stack **b, int *posa, int *posb,
-		int sa, int sb)
+void	exec_double_rotate(t_stack **a, t_stack **b, t_rotate_params *p)
 {
-	while (*posa > 0 && *posb > 0 && *posa <= sa / 2 && *posb <= sb / 2)
+	while (p->pos_a > 0 && p->pos_b > 0 && p->pos_a <= p->size_a / 2
+		&& p->pos_b <= p->size_b / 2)
 	{
 		rr(a, b, 1);
-		(*posa)--;
-		(*posb)--;
+		p->pos_a--;
+		p->pos_b--;
 	}
 }
 
-void	exec_double_reverse(t_stack **a, t_stack **b, int *posa, int *posb,
-		int sa, int sb)
+void	exec_double_reverse(t_stack **a, t_stack **b, t_rotate_params *p)
 {
-	while (*posa < sa && *posb < sb && *posa > sa / 2 && *posb > sb / 2)
+	while (p->pos_a < p->size_a && p->pos_b < p->size_b
+		&& p->pos_a > p->size_a / 2 && p->pos_b > p->size_b / 2)
 	{
 		rrr(a, b, 1);
-		(*posa)++;
-		(*posb)++;
+		p->pos_a++;
+		p->pos_b++;
 	}
 }

@@ -12,30 +12,30 @@
 
 #include "push_swap.h"
 
-void	exec_rotate_a(t_stack **a, int *posa, int sa)
+void	exec_rotate_a(t_stack **a, t_rotate_params *p)
 {
-	while (*posa > 0 && *posa <= sa / 2)
+	while (p->pos_a > 0 && p->pos_a <= p->size_a / 2)
 	{
 		ra(a, 1);
-		(*posa)--;
+		p->pos_a--;
 	}
-	while (*posa < sa && *posa > sa / 2)
+	while (p->pos_a < p->size_a && p->pos_a > p->size_a / 2)
 	{
 		rra(a, 1);
-		(*posa)++;
+		p->pos_a++;
 	}
 }
 
-void	exec_rotate_b(t_stack **b, int *posb, int sb)
+void	exec_rotate_b(t_stack **b, t_rotate_params *p)
 {
-	while (*posb > 0 && *posb <= sb / 2)
+	while (p->pos_b > 0 && p->pos_b <= p->size_b / 2)
 	{
 		rb(b, 1);
-		(*posb)--;
+		p->pos_b--;
 	}
-	while (*posb < sb && *posb > sb / 2)
+	while (p->pos_b < p->size_b && p->pos_b > p->size_b / 2)
 	{
 		rrb(b, 1);
-		(*posb)++;
+		p->pos_b++;
 	}
 }
