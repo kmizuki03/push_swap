@@ -1,4 +1,28 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   push_swap.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kmizuki <kmizuki@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/17 12:49:47 by kmizuki           #+#    #+#             */
+/*   Updated: 2025/10/17 12:49:48 by kmizuki          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
+
+static void	choose_sort(t_stack **stack_a, t_stack **stack_b, int size)
+{
+	if (size == 2)
+		sa(stack_a, 1);
+	else if (size == 3)
+		sort_three(stack_a);
+	else if (size <= 5)
+		sort_small(stack_a, stack_b);
+	else
+		turk_sort(stack_a, stack_b);
+}
 
 int	main(int argc, char **argv)
 {
@@ -18,14 +42,7 @@ int	main(int argc, char **argv)
 	}
 	size = stack_size(stack_a);
 	index_stack(&stack_a);
-	if (size == 2)
-		sa(&stack_a, 1);
-	else if (size == 3)
-		sort_three(&stack_a);
-	else if (size <= 5)
-		sort_small(&stack_a, &stack_b);
-	else
-		turk_sort(&stack_a, &stack_b);
+	choose_sort(&stack_a, &stack_b, size);
 	free_stack(&stack_a);
 	free_stack(&stack_b);
 	return (0);

@@ -1,41 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sort_small.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kmizuki <kmizuki@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/17 12:50:46 by kmizuki           #+#    #+#             */
+/*   Updated: 2025/10/17 12:50:46 by kmizuki          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
-
-static int	get_max_value_pos(t_stack *stack)
-{
-	int	max;
-	int	pos;
-	int	max_pos;
-
-	max = stack->value;
-	pos = 0;
-	max_pos = 0;
-	while (stack)
-	{
-		if (stack->value > max)
-		{
-			max = stack->value;
-			max_pos = pos;
-		}
-		pos++;
-		stack = stack->next;
-	}
-	return (max_pos);
-}
-
-void	sort_three(t_stack **stack_a)
-{
-	int	max_pos;
-
-	if (is_sorted(*stack_a))
-		return ;
-	max_pos = get_max_value_pos(*stack_a);
-	if (max_pos == 0)
-		ra(stack_a, 1);
-	else if (max_pos == 1)
-		rra(stack_a, 1);
-	if ((*stack_a)->value > (*stack_a)->next->value)
-		sa(stack_a, 1);
-}
 
 static int	get_distance(t_stack *stack, int index)
 {
@@ -52,15 +27,11 @@ static int	get_distance(t_stack *stack, int index)
 	return (distance);
 }
 
-static void	push_min_to_b(t_stack **stack_a, t_stack **stack_b)
+static void	rotate_to_min(t_stack **stack_a, int min_index, int size)
 {
-	int	min_index;
 	int	distance;
-	int	size;
 
-	min_index = get_min_index(*stack_a);
 	distance = get_distance(*stack_a, min_index);
-	size = stack_size(*stack_a);
 	if (distance <= size / 2)
 	{
 		while ((*stack_a)->index != min_index)
@@ -71,6 +42,16 @@ static void	push_min_to_b(t_stack **stack_a, t_stack **stack_b)
 		while ((*stack_a)->index != min_index)
 			rra(stack_a, 1);
 	}
+}
+
+static void	push_min_to_b(t_stack **stack_a, t_stack **stack_b)
+{
+	int	min_index;
+	int	size;
+
+	min_index = get_min_index(*stack_a);
+	size = stack_size(*stack_a);
+	rotate_to_min(stack_a, min_index, size);
 	pb(stack_a, stack_b, 1);
 }
 

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   turk_sort.c                                        :+:      :+:    :+:   */
+/*   turk_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kmizuki <kmizuki@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,26 +12,20 @@
 
 #include "push_swap.h"
 
-int		push_initial(t_stack **a, t_stack **b, int size);
-void	push_all_back(t_stack **a, t_stack **b, int pushed);
-void	final_rotate(t_stack **a);
-void	do_move(t_stack **a, t_stack **b, int pos_a);
-int		calc_cost(t_stack *a, t_stack *b, int pos_a);
-int		find_cheap(t_stack *a, t_stack *b);
-
-void	turk_sort(t_stack **a, t_stack **b)
+int	push_initial(t_stack **a, t_stack **b, int size)
 {
-	int	size;
 	int	pushed;
 
-	size = stack_size(*a);
-	pushed = push_initial(a, b, size);
-	while (size-- > 3)
+	pushed = 0;
+	if (size > 3)
 	{
-		do_move(a, b, find_cheap(*a, *b));
+		pb(a, b, 1);
 		pushed++;
 	}
-	sort_three(a);
-	push_all_back(a, b, pushed);
-	final_rotate(a);
+	if (size > 4)
+	{
+		pb(a, b, 1);
+		pushed++;
+	}
+	return (pushed);
 }

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   turk_sort.c                                        :+:      :+:    :+:   */
+/*   turk_final.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kmizuki <kmizuki@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,26 +12,49 @@
 
 #include "push_swap.h"
 
-int		push_initial(t_stack **a, t_stack **b, int size);
-void	push_all_back(t_stack **a, t_stack **b, int pushed);
-void	final_rotate(t_stack **a);
-void	do_move(t_stack **a, t_stack **b, int pos_a);
-int		calc_cost(t_stack *a, t_stack *b, int pos_a);
-int		find_cheap(t_stack *a, t_stack *b);
-
-void	turk_sort(t_stack **a, t_stack **b)
+static void	rotate_b_to_max(t_stack **b)
 {
+	int	pos;
 	int	size;
-	int	pushed;
 
-	size = stack_size(*a);
-	pushed = push_initial(a, b, size);
-	while (size-- > 3)
+	pos = get_position(*b, get_max_index(*b));
+	size = stack_size(*b);
+	while (pos > 0 && pos <= size / 2)
 	{
-		do_move(a, b, find_cheap(*a, *b));
-		pushed++;
+		rb(b, 1);
+		pos--;
 	}
-	sort_three(a);
-	push_all_back(a, b, pushed);
-	final_rotate(a);
+	while (pos < size && pos > size / 2)
+	{
+		rrb(b, 1);
+		pos++;
+	}
+}
+
+void	push_all_back(t_stack **a, t_stack **b, int pushed)
+{
+	while (pushed--)
+	{
+		rotate_b_to_max(b);
+		pa(a, b, 1);
+	}
+}
+
+void	final_rotate(t_stack **a)
+{
+	int	pos;
+	int	size;
+
+	pos = get_position(*a, get_min_index(*a));
+	size = stack_size(*a);
+	if (pos <= size / 2)
+	{
+		while (pos-- > 0)
+			ra(a, 1);
+	}
+	else
+	{
+		while (pos++ < size)
+			rra(a, 1);
+	}
 }

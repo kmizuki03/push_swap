@@ -1,34 +1,55 @@
-NAME		= push_swap
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: kmizuki <kmizuki@student.42.fr>            +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2025/10/17 12:00:00 by kmizuki           #+#    #+#              #
+#    Updated: 2025/10/17 12:00:00 by kmizuki          ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
-CC			= cc
-CFLAGS		= -Wall -Wextra -Werror
-RM			= rm -f
+NAME = push_swap
 
-SRCS		= push_swap.c \
-			  parse.c \
-			  utils.c \
-			  stack_utils.c \
-			  commands.c \
-			  commands2.c \
-			  index.c \
-			  sort_small.c \
-			  turk_sort.c
+CC = cc
+CFLAGS = -Wall -Wextra -Werror
 
-OBJS		= $(SRCS:.c=.o)
+SRCS = push_swap.c \
+       stack.c \
+       commands_swap_push.c \
+       commands_rotate.c \
+       commands_reverse_rotate.c \
+       parse.c \
+       utils.c \
+       utils_atoi.c \
+       index_get.c \
+       index_set.c \
+       sort_three.c \
+       sort_small.c \
+       turk_cost.c \
+       turk_rotate1.c \
+       turk_rotate2.c \
+       turk_move.c \
+       turk_init.c \
+       turk_final.c \
+       turk_sort.c
+
+OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
-%.o: %.c
+%.o: %.c push_swap.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	$(RM) $(OBJS)
+	rm -f $(OBJS)
 
 fclean: clean
-	$(RM) $(NAME)
+	rm -f $(NAME)
 
 re: fclean all
 
