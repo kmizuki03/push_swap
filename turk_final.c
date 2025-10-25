@@ -12,6 +12,44 @@
 
 #include "push_swap.h"
 
+static int	get_target_pos_in_a(t_stack *a, int index_b)
+{
+	int		target_idx;
+	int		target_pos;
+	t_stack	*tmp;
+
+	target_idx = INT_MAX;
+	tmp = a;
+	while (tmp)
+	{
+		if (tmp->index > index_b && tmp->index < target_idx)
+			target_idx = tmp->index;
+		tmp = tmp->next;
+	}
+	if (target_idx == INT_MAX)
+		target_pos = get_position(a, get_min_index(a));
+	else
+		target_pos = get_position(a, target_idx);
+	return (target_pos);
+}
+
+static void	rotate_a_to_target(t_stack **a, int target_pos)
+{
+	int	size;
+
+	size = stack_size(*a);
+	if (target_pos <= size / 2)
+	{
+		while (target_pos-- > 0)
+			ra(a, 1);
+	}
+	else
+	{
+		while (target_pos++ < size)
+			rra(a, 1);
+	}
+}
+
 static void	rotate_b_to_max(t_stack **b)
 {
 	int	pos;
@@ -33,8 +71,14 @@ static void	rotate_b_to_max(t_stack **b)
 
 void	push_all_back(t_stack **a, t_stack **b, int pushed)
 {
+	int	max_idx_b;
+	int	target_pos;
+
 	while (pushed--)
 	{
+		max_idx_b = get_max_index(*b);
+		target_pos = get_target_pos_in_a(*a, max_idx_b);
+		rotate_a_to_target(a, target_pos);
 		rotate_b_to_max(b);
 		pa(a, b, 1);
 	}
