@@ -6,7 +6,7 @@
 /*   By: kmizuki <kmizuki@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:51:10 by kmizuki           #+#    #+#             */
-/*   Updated: 2025/10/17 12:51:11 by kmizuki          ###   ########.fr       */
+/*   Updated: 2025/10/25 17:49:26 by kmizuki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,4 +76,3 @@ int	find_cheap(t_stack *a, t_stack *b)
 	}
 	return (cheap_pos);
 }
-
