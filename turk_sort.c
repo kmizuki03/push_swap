@@ -26,6 +26,7 @@ void	turk_sort(t_stack **a, t_stack **b)
 
 	size = stack_size(*a);
 	pushed = push_initial(a, b, size);
+	size = stack_size(*a);
 	while (size-- > 3)
 	{
 		do_move(a, b, find_cheap(*a, *b));
