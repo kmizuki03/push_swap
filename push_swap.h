@@ -74,8 +74,11 @@ void				turk_sort(t_stack **a, t_stack **b);
 /* Utils */
 void				ft_putstr_fd(char *s, int fd);
 int					ft_atoi(const char *str);
+int					ft_strlen(const char *s);
 int					is_number(char *str);
 int					is_sorted(t_stack *stack);
 void				error_exit(t_stack **stack_a, t_stack **stack_b);
+char				**ft_split(char const *s, char c);
+void				free_string_array(char **arr);
 
 #endif

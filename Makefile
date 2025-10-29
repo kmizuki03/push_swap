@@ -24,6 +24,7 @@ SRCS = push_swap.c \
        parse.c \
        utils.c \
        utils_atoi.c \
+       utils_split.c \
        index_get.c \
        index_set.c \
        sort_three.c \
