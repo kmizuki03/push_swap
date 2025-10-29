@@ -6,7 +6,7 @@
 /*   By: kmizuki <kmizuki@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:51:22 by kmizuki           #+#    #+#             */
-/*   Updated: 2025/10/17 12:51:24 by kmizuki          ###   ########.fr       */
+/*   Updated: 2025/10/29 18:24:57 by kmizuki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,10 @@ char	**ft_split(char const *s, char c)
 	result = (char **)malloc(sizeof(char *) * (count_words(s, c) + 1));
 	if (!result)
 		return (NULL);
-	i = 0;
+	i = -1;
 	j = 0;
 	start = -1;
-	while (i <= (int)ft_strlen(s))
+	while (++i <= (int)ft_strlen(s))
 	{
 		if (s[i] != c && start < 0)
 			start = i;
@@ -87,7 +87,6 @@ char	**ft_split(char const *s, char c)
 			result[j++] = word_dup(s, start, i);
 			start = -1;
 		}
-		i++;
 	}
 	result[j] = NULL;
 	return (result);
