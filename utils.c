@@ -61,3 +61,13 @@ void	error_exit(t_stack **stack_a, t_stack **stack_b)
 	ft_putstr_fd("Error\n", 2);
 	exit(1);
 }
+
+int	ft_strlen(const char *s)
+{
+	int	len;
+
+	len = 0;
+	while (s[len])
+		len++;
+	return (len);
+}

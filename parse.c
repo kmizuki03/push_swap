@@ -53,21 +53,55 @@ static int	check_overflow(const char *str)
 	return (0);
 }
 
+static void	parse_string_arg(char *str, t_stack **stack_a)
+{
+	char	**split;
+	int		i;
+	t_stack	*new;
+
+	split = ft_split(str, ' ');
+	if (!split)
+		error_exit(stack_a, NULL);
+	i = 0;
+	while (split[i])
+	{
+		if (!is_number(split[i]) || check_overflow(split[i]))
+		{
+			free_string_array(split);
+			error_exit(stack_a, NULL);
+		}
+		new = stack_new(ft_atoi(split[i]));
+		if (!new)
+		{
+			free_string_array(split);
+			error_exit(stack_a, NULL);
+		}
+		stack_add_back(stack_a, new);
+		i++;
+	}
+	free_string_array(split);
+}
+
 void	parse_args(int argc, char **argv, t_stack **stack_a)
 {
 	int		i;
 	t_stack	*new;
 
-	i = 1;
-	while (i < argc)
+	if (argc == 2)
+		parse_string_arg(argv[1], stack_a);
+	else
 	{
-		if (!is_number(argv[i]) || check_overflow(argv[i]))
-			error_exit(stack_a, NULL);
-		new = stack_new(ft_atoi(argv[i]));
-		if (!new)
-			error_exit(stack_a, NULL);
-		stack_add_back(stack_a, new);
-		i++;
+		i = 1;
+		while (i < argc)
+		{
+			if (!is_number(argv[i]) || check_overflow(argv[i]))
+				error_exit(stack_a, NULL);
+			new = stack_new(ft_atoi(argv[i]));
+			if (!new)
+				error_exit(stack_a, NULL);
+			stack_add_back(stack_a, new);
+			i++;
+		}
 	}
 	if (has_duplicates(*stack_a))
 		error_exit(stack_a, NULL);
