@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Push_swap アルゴリズムガイド</title>
+    <style>
+        body {
+            font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic Pro', 'Meiryo', sans-serif;
+            line-height: 1.8;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #34495e;
+            border-bottom: 2px solid #95a5a6;
+            padding-bottom: 8px;
+            margin-top: 30px;
+        }
+        h3 {
+            color: #7f8c8d;
+            margin-top: 20px;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        pre {
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            overflow-x: auto;
+        }
+        pre code {
+            background-color: transparent;
+            padding: 0;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+<p><h1>🎴 Push_swap ソートアルゴリズム 初心者向けガイド</h1></p><p><h2>📚 目次</h2>
+1. [基本的な仕組み](#基本的な仕組み)
+2. [使える操作](#使える操作)
+3. [サイズ別の戦略](#サイズ別の戦略)
+4. [Turkアルゴリズムの詳細](#turkアルゴリズムの詳細)
+5. [性能](#性能)</p><p>---</p><p><h2>🎯 基本的な仕組み</h2></p><p><h3>トランプの山札で例えると...</h3></p><p>あなたの前に<strong>2つの山札置き場（スタックAとB）</strong>があります。</p><p>- <strong>スタックA</strong>: バラバラの数字のカードが積まれている
+- <strong>スタックB</strong>: 最初は空っぽ
+- <strong>目標</strong>: スタックAを小さい順に並べる（一番上が最小）</p><p>---</p><p><h2>📜 使える操作</h2></p><p>| 操作 | 説明 | 例 |
+|------|------|-----|
+| <strong>sa</strong> (swap a) | Aの上2枚を入れ替え | <code>[2,1,3]</code> → <code>[1,2,3]</code> |
+| <strong>ra</strong> (rotate a) | Aの一番上を一番下に移動 | <code>[1,2,3]</code> → <code>[2,3,1]</code> |
+| <strong>rra</strong> (reverse rotate a) | Aの一番下を一番上に移動 | <code>[1,2,3]</code> → <code>[3,1,2]</code> |
+| <strong>pb</strong> (push b) | AからBへ1枚移動 | A:<code>[1,2]</code> B:<code>[]</code> → A:<code>[2]</code> B:<code>[1]</code> |
+| <strong>pa</strong> (push a) | BからAへ1枚移動 | A:<code>[2]</code> B:<code>[1]</code> → A:<code>[1,2]</code> B:<code>[]</code> |</p><p>他にも <code>sb</code>, <code>rb</code>, <code>rrb</code>, <code>ss</code>, <code>rr</code>, <code>rrr</code> など、両方のスタックを同時に操作できるものもあります。</p><p>---</p><p><h2>🎴 サイズ別の戦略</h2></p><p><h3>📦 2枚の時（超簡単）</h3></p><p><pre><code>入力: [2, 1]
+操作: sa
+結果: [1, 2]  完了！
+</code></pre></p><p><strong>説明</strong>: 上2枚を交換するだけ</p><p>---</p><p><h3>🃏 3枚の時（パズル感覚）</h3></p><p><strong>例: [3, 1, 2] を並べ替える</strong></p><p><pre><code>ステップ1: 一番大きいカード(3)を探す
+          → 先頭にある！</p><p>ステップ2: 3を下に送る
+          [3, 1, 2]
+            ↓ ra
+          [1, 2, 3]</p><p>ステップ3: 上2枚を確認
+          1 < 2 なので完了！
+</code></pre></p><p><strong>考え方</strong>:
+- まず「一番大きいカードを下に追いやる」
+- 残りの2枚は必要なら交換</p><p><strong>最大操作数</strong>: 2回</p><p>---</p><p><h3>🎴 5枚の時（賢い作戦）</h3></p><p><strong>例: [5, 2, 4, 1, 3] を並べ替える</strong></p><p><strong>作戦</strong>:
+1. 小さいカードから順に「Bに避難」させる
+2. 3枚だけ残したら、さっきの3枚ソートを使う
+3. Bから戻す</p><p><strong>実行例</strong>:</p><p><pre><code>初期状態:
+A: [5, 2, 4, 1, 3]
+B: []</p><p>↓ 最小(1)を探して先頭に回転
+A: [1, 3, 5, 2, 4]
+B: []</p><p>↓ Bに避難 (pb)
+A: [3, 5, 2, 4]
+B: [1]</p><p>↓ 次の最小(2)を探して回転
+A: [2, 4, 3, 5]
+B: [1]</p><p>↓ Bに避難 (pb)
+A: [4, 3, 5]
+B: [2, 1]</p><p>↓ 3枚ソート
+A: [3, 4, 5]
+B: [2, 1]</p><p>↓ Bから戻す (pa × 2)
+A: [1, 2, 3, 4, 5]
+B: []</p><p>完了！
+</code></pre></p><p><strong>平均操作数</strong>: 6-12回</p><p>---</p><p><h2>🏗️ Turkアルゴリズム（100枚以上）</h2></p><p><h3>🍽️ レストランの皿洗いの例え話</h3></p><p><strong>状況</strong>:
+- <strong>あなた (シンクA)</strong>: 汚れた皿の山
+- <strong>友達 (シンクB)</strong>: 助けてくれる人
+- <strong>目標</strong>: シンクAの皿を綺麗に積み直す</p><p>---</p><p><h3>📋 フェーズ1: 準備</h3></p><p><pre><code>まず2枚の皿を友達に渡す（スタックBへ）</p><p>「とりあえずこれ持っててー」
+</code></pre></p><p><strong>コード</strong>: <code>pb, pb</code></p><p>---</p><p><h3>🔄 フェーズ2: メインの作業（グリーディ戦略）</h3></p><p>自分の山（A）から、<strong>「今移動するのが一番楽な皿」</strong>を毎回選ぶ</p><p><h4>楽さの計算方法</h4></p><p><pre><code>コスト = Aの回転数 + Bの回転数</p><p>例: Aの「30」をBに移したい
+A: [10, 20, 30, 40, 50]
+     ↑0  ↑1  ↑2  ↑3  ↑4</p><p>方法1: 前から回転 (ra)
+    → 2回必要 (10, 20を下に送る)</p><p>方法2: 後ろから回転 (rra)
+    → 3回必要 (50, 40を上に送る)</p><p>→ 方法1を選ぶ！ (2 < 3)
+</code></pre></p><p><h4>最適化のポイント</h4></p><p><strong>同じ方向なら同時回転可能</strong></p><p><pre><code>Aを前に2回 + Bを前に3回
+  ↓
+rrを2回 + rbを1回
+（同時実行で節約！）
+</code></pre></p><p><strong>繰り返し</strong>: 自分の山が3枚になるまで繰り返す</p><p>---</p><p><h3>🎯 フェーズ3: 残り3枚</h3></p><p>3枚ソートアルゴリズムで片付ける（最大2操作）</p><p>---</p><p><h3>↩️ フェーズ4: 友達から返してもらう</h3></p><p>友達の山から、常に<strong>「一番大きい皿」</strong>を取って、自分の山の<strong>「正しい位置」</strong>に挿入</p><p><pre><code>例:
+自分の山: [1, 3, 5, 7]
+友達から: 6 を返してもらう</p><p>ステップ1: 正しい位置を見つける
+          → 5と7の間</p><p>ステップ2: [1, 3, 5] まで回転</p><p>ステップ3: 6を受け取る (pa)</p><p>結果: [1, 3, 5, 6, 7]
+</code></pre></p><p>---</p><p><h3>🔧 フェーズ5: 最後の調整</h3></p><p>一番小さい皿が上に来るように回転</p><p><pre><code>[3, 4, 5, 1, 2]
+  ↓ rra × 2
+[1, 2, 3, 4, 5]
+</code></pre></p><p>---</p><p><h2>💡 なぜこの方法が賢いの？</h2></p><p><h3>🎯 グリーディ（欲張り）戦略とは</h3></p><p>完璧な答えを探すのではなく、<strong>「今この瞬間、一番良さそうな選択」</strong>を繰り返す。</p><p><strong>日常の例</strong>:
+- 旅行で毎回「一番近い観光地」に行く
+- 買い物で毎回「一番安いもの」を選ぶ
+- ゲームで「一番近い敵から倒す」</p><p>完璧じゃないけど、<strong>十分良い結果</strong>になる！</p><p>---</p><p><h2>📊 コスト計算の詳細</h2></p><p><h3>回転コストの計算</h3></p><p><pre><code>def calc_rotation_cost(position, stack_size):
+    forward_cost = position
+    backward_cost = stack_size - position</p><p>    return min(forward_cost, backward_cost)</p><p>例:
+position = 2, stack_size = 5
+forward:  2回
+backward: 3回
+→ 2回を選択
+</code></pre></p><p><h3>同方向最適化</h3></p><p><pre><code>両方のスタックが同じ方向の場合:
+  total_cost = max(cost_a, cost_b)
+  （同時回転できるため）</p><p>異なる方向の場合:
+  total_cost = cost_a + cost_b
+  （順次実行が必要）
+</code></pre></p><p>---</p><p><h2>🏆 性能</h2></p><p><h3>操作数の比較</h3></p><p>| 要素数 | 使用アルゴリズム | 平均操作数 | 42評価基準 | 結果 |
+|--------|----------------|-----------|-----------|------|
+| 2 | swap | 1 | - | ✓ |
+| 3 | sort_three | 0-2 | ≤3 | ✓✓✓ |
+| 5 | sort_small | 6-8 | ≤12 | ✓✓✓ |
+| 100 | turk_sort | ~570 | <700 (5点) | ⭐⭐⭐⭐⭐ |
+| 500 | turk_sort | ~5100 | <5500 (5点) | ⭐⭐⭐⭐⭐ |</p><p><h3>日常の例えで説明</h3></p><p><strong>100枚の場合</strong>:
+- 平均570回の操作
+- これは「約5.7回の操作で1枚処理」
+- 基準（700回）より<strong>はるかに少ない！</strong></p><p><strong>500枚の場合</strong>:
+- 平均5100回の操作
+- これは「約10回の操作で1枚処理」
+- 基準（5500回）を<strong>楽々クリア！</strong></p><p>---</p><p><h2>🎓 まとめ</h2></p><p><h3>小さい数（2-5枚）</h3>
+<pre><code>「目で見て、頭で考えて、最適な手を打つ」
+→ パズルを解く感覚
+</code></pre></p><p><h3>大きい数（100枚以上）</h3>
+<pre><code>「毎回『今一番楽な選択』をする」
+→ ゲームで「一番近い敵から倒す」みたいな感じ
+</code></pre></p><p>---</p><p><h2>🎁 覚えておくポイント</h2></p><p>1. ✅ <strong>小さい時は賢く</strong>: パズルみたいに最適解
+2. ✅ <strong>大きい時は欲張りに</strong>: 毎回「今一番楽な手」
+3. ✅ <strong>助っ人を使う</strong>: スタックBを作業台として活用
+4. ✅ <strong>完璧じゃなくても十分</strong>: グリーディでも十分速い！</p><p>---</p><p><h2>📚 アルゴリズムの時間計算量</h2></p><p>| アルゴリズム | 時間計算量 | 空間計算量 |
+|------------|-----------|-----------|
+| sort_three | O(1) | O(1) |
+| sort_small | O(n) | O(1) |
+| turk_sort | O(n²) | O(1) |</p><p><strong>注</strong>: push_swapの制約では、配列のソートのような O(n log n) は達成困難。
+しかし、実用的には十分に高速！</p><p>---</p><p><h2>🌟 Turkアルゴリズムの名前の由来</h2></p><p>42コミュニティで<strong>"Turkish Algorithm"</strong>または<strong>"Turk Sort"</strong>と呼ばれている、
+push_swap専用に最適化されたグリーディアルゴリズムです。</p><p>他の呼び方:
+- <strong>Cost-Based Greedy Sort</strong> (コストベース貪欲法)
+- <strong>Two-Stack Greedy Algorithm</strong> (2スタック貪欲法)</p><p>---</p><p><h2>🔍 実装のポイント</h2></p><p><h3>1. インデックス化</h3>
+<pre><code>元の値: [42, -17, 100, 3]
+↓
+インデックス: [2, 0, 3, 1]
+</code></pre>
+どんな値でも0〜n-1の範囲で扱える！</p><p><h3>2. ターゲット検索</h3>
+<pre><code>スタックBで、index_a より小さい最大のインデックスを探す</p><p>例: index_a = 5
+    stack_b = [2, 7, 4, 8]
+    → target = 4 (5より小さい最大値)
+</code></pre></p><p><h3>3. 双方向最適化</h3>
+<pre><code>// 疑似コード
+if (両方forward || 両方backward) {
+    cost = max(cost_a, cost_b);  // 同時回転
+} else {
+    cost = cost_a + cost_b;      // 順次実行
+}
+</code></pre></p><p>---</p><p><strong>このガイドで、push_swapのソートアルゴリズムが理解できましたか？</strong></p><p>「レストランの皿洗い」をイメージすると、だいぶわかりやすくなると思います！🍽️✨</p><p>---</p><p>*作成日: 2025年*
+*対象: 42 Tokyo push_swap プロジェクト*
+</p>
+</body>
+</html>
