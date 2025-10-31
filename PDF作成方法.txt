@@ -1,0 +1,163 @@
+=====================================================
+Push_swap アルゴリズムガイド - PDF化の方法
+=====================================================
+
+すでに以下のファイルを作成しました：
+✅ push_swap_algorithm_guide_ja.md (Markdown)
+✅ push_swap_algorithm_guide_ja.html (HTML)
+
+## 📥 PDFに変換する3つの方法
+
+### 方法1: ブラウザでPDF化（最も簡単・推奨）
+
+1. HTMLファイルを開く
+   ```bash
+   # ファイルパス
+   /home/user/push_swap/push_swap_algorithm_guide_ja.html
+   ```
+
+2. ブラウザで開く
+   - Mac: Finder でダブルクリック
+   - Windows: エクスプローラーでダブルクリック
+   - Linux: `xdg-open push_swap_algorithm_guide_ja.html`
+
+3. 印刷メニューを開く
+   - Mac: ⌘ + P
+   - Windows/Linux: Ctrl + P
+
+4. 「PDFとして保存」を選択
+   - 送信先: PDFに保存
+   - ファイル名: push_swap_guide.pdf
+
+✅ これで高品質なPDFが作成されます！
+
+---
+
+### 方法2: オンラインツール（インターネット接続が必要）
+
+以下のサイトでMarkdownまたはHTMLファイルをアップロード：
+
+**Markdownから:**
+- https://www.markdowntopdf.com/
+- https://md2pdf.netlify.app/
+- https://dillinger.io/
+
+**HTMLから:**
+- https://www.sejda.com/html-to-pdf
+- https://pdfcrowd.com/html-to-pdf/
+
+使い方:
+1. サイトにアクセス
+2. ファイルをアップロード
+3. 「Convert」または「変換」をクリック
+4. PDFをダウンロード
+
+---
+
+### 方法3: コマンドライン（pandocがある場合）
+
+```bash
+# pandocのインストール
+# Ubuntu/Debian:
+sudo apt install pandoc texlive-xetex texlive-lang-japanese
+
+# Mac:
+brew install pandoc
+brew install --cask basictex
+
+# PDF生成
+pandoc push_swap_algorithm_guide_ja.md \
+  -o push_swap_guide.pdf \
+  --pdf-engine=xelatex \
+  -V CJKmainfont="Noto Sans CJK JP" \
+  -V geometry:margin=1in
+
+# または wkhtmltopdf を使用
+sudo apt install wkhtmltopdf  # Linux
+brew install wkhtmltopdf       # Mac
+
+wkhtmltopdf push_swap_algorithm_guide_ja.html push_swap_guide.pdf
+```
+
+---
+
+### 方法4: VSCodeで変換（VSCodeユーザー向け）
+
+1. VSCodeで push_swap_algorithm_guide_ja.md を開く
+
+2. 拡張機能をインストール:
+   - "Markdown PDF" by yzane
+
+3. コマンドパレット (Ctrl/⌘ + Shift + P) で:
+   - "Markdown PDF: Export (pdf)" を選択
+
+4. 自動的にPDFが生成されます
+
+---
+
+## 🎯 推奨方法
+
+**一番簡単**: 方法1（ブラウザ）
+- 追加ソフト不要
+- 高品質
+- 5秒で完了
+
+**一番高機能**: 方法3（pandoc）
+- カスタマイズ可能
+- コマンドラインから自動化
+- プロフェッショナルな仕上がり
+
+---
+
+## 📁 現在のファイル
+
+```bash
+# 確認コマンド
+ls -lh /home/user/push_swap/push_swap_algorithm_guide_ja.*
+
+# 出力例:
+# -rw-r--r-- 12K push_swap_algorithm_guide_ja.html
+# -rw-r--r-- 8.5K push_swap_algorithm_guide_ja.md
+```
+
+---
+
+## 💡 その他の方法
+
+### Google Docs経由
+1. push_swap_algorithm_guide_ja.md をコピー
+2. Google Docsに貼り付け
+3. ファイル → ダウンロード → PDF
+
+### Microsoft Word経由
+1. Word で Markdownファイルを開く
+2. ファイル → エクスポート → PDF
+
+### LibreOffice経由
+1. LibreOffice Writer で開く
+2. ファイル → PDFとしてエクスポート
+
+---
+
+## 🚀 クイックスタート
+
+最速でPDFを作成したい場合:
+
+```bash
+# 1. HTMLファイルを開く（ブラウザが起動）
+open push_swap_algorithm_guide_ja.html  # Mac
+start push_swap_algorithm_guide_ja.html # Windows
+xdg-open push_swap_algorithm_guide_ja.html # Linux
+
+# 2. Ctrl+P (または ⌘+P)
+# 3. 「PDFとして保存」を選択
+# 4. 完了！
+```
+
+---
+
+作成日: 2025年
+対象: 42 Tokyo push_swap プロジェクト
+
+このガイドに従えば、必ずPDFを作成できます！
+=====================================================
